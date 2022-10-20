@@ -28,6 +28,17 @@ export class Server {
 			request.query[filterKey] === location[filterKey]
 		));
 
-		response.json(filteredLocations);
+		const forecasts = filteredLocations.map(async location => {
+			const forecastData = await api.getLocationForecast(location);
+
+			return {
+				id: location.id,
+				name: location.name,
+				area: location.area,
+				forecast: forecastData.periods.map(period => period.dataPoints.map(dataPoint => dataPoint.toJSON()))
+			};
+		});
+
+		response.json(await Promise.all(forecasts));
 	}
 }

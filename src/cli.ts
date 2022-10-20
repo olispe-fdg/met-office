@@ -34,8 +34,8 @@ function chooseLocationFromMatches(locations: Location[]): Location {
 
 async function handleUserLocation(location: Location) {
     const forecast = await MetOfficeAPI.getLocationForecast(location);
-    const nextRep = forecast.getNextRep();
-    console.log(forecast.formatRep(nextRep));
+    const nextRep = forecast.getNextDataPoint();
+    console.log(nextRep.toString());
 }
 
 export async function commandLineInterface(locations: Location[]) {

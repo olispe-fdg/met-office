@@ -1,33 +1,23 @@
 import { DateTime, Duration } from "luxon";
-import { APIPeriod, APIPeriodRep } from "./interface/APIPeriod.interface";
-
-export interface PeriodRep extends APIPeriodRep {
-    date: DateTime;
-}
+import { APIPeriod } from "./interface/APIPeriod.interface";
+import { DataPoint } from "./DataPoint";
 
 export class Period {
     date: DateTime;
-    reps: PeriodRep[];
+    dataPoints: DataPoint[];
 
     constructor(data: APIPeriod) {
         // Remove Z from end of iso string to work with luxon
         const iso = data.value.slice(0, -1);
         this.date = DateTime.fromISO(iso);
 
-        this.reps = data.Rep.map((rep) => {
-            const minutes = Duration.fromObject({ minutes: parseInt(rep.$) });
-            const repDate = this.date.plus(minutes);
-            return {
-                ...rep,
-                date: repDate,
-            };
-        });
+        this.dataPoints = data.Rep.map((rep) => new DataPoint(rep, this.date));
     }
 
-    getNextRep() {
+    getNextDataPoint() {
         const now = DateTime.now().toMillis();
 
-        const nextRep = this.reps.reduce((prev, curr) => {
+        const nextDataPoint = this.dataPoints.reduce((prev, curr) => {
             const diff = curr.date.toMillis() - now;
 
             if (diff < 0) {
@@ -43,12 +33,12 @@ export class Period {
             }
 
             return prev;
-        }, null as PeriodRep | null);
+        }, null as DataPoint | null);
 
-        if (!nextRep) {
-            return this.reps[this.reps.length - 1];
+        if (!nextDataPoint) {
+            return this.dataPoints[this.dataPoints.length - 1];
         }
 
-        return nextRep;
+        return nextDataPoint;
     }
 }
