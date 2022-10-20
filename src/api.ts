@@ -15,6 +15,16 @@ interface APILocation {
 	longitude: string;
 }
 
+export class APIError extends Error {
+	statusCode: number;
+
+	constructor(message: string, statusCode: number) {
+		super(message);
+
+		this.statusCode = statusCode;
+	}
+}
+
 export class Location {
 	id: string;
 	name: string;
@@ -39,12 +49,13 @@ export class MetOfficeAPI {
 	}
 
 	private async request(type: RequestType, endpoint: string, querystring: string = "") {
-		try {
-			const response = await fetch(`http://datapoint.metoffice.gov.uk/public/data/val/${type}/all/json/${endpoint}?key=${this.token}${querystring}`);
-			return await response.json();
-		} catch (err) {
-			console.error(err);
+		const response = await fetch(`http://datapoint.metoffice.gov.uk/public/data/val/${type}/all/json/${endpoint}?key=${this.token}${querystring}`);
+
+		if (!response.ok) {
+			throw new APIError(response.statusText, response.status);
 		}
+
+		return await response.json();
 	}
 
 	async getLocations(): Promise<Location[]> {
