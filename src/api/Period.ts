@@ -1,5 +1,5 @@
 import { DateTime, Duration } from "luxon";
-import { APIPeriod, APIPeriodRep } from "./APIPeriod.interface";
+import { APIPeriod, APIPeriodRep } from "./interface/APIPeriod.interface";
 
 export interface PeriodRep extends APIPeriodRep {
     date: DateTime;

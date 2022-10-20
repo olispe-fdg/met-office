@@ -1,7 +1,7 @@
 import { Location } from "./Location";
 import { APIError } from "./APIError";
-import { APILocation } from "./APILocation.interface";
 import { Forecast } from "./Forecast";
+import { APILocation } from "./interface/";
 
 enum RequestType {
     Forecast = "wxfcs",

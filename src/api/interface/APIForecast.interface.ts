@@ -1,13 +1,9 @@
+import { APIParam } from "./APIParam.interface";
 import { APIPeriod } from "./APIPeriod.interface";
 
 export interface APIForecast {
     Wx: {
-        Param: {
-            name: string;
-            unit: string;
-            // label for this parameter
-            $: string;
-        }[];
+        Param: APIParam[];
     };
 
     DV: {

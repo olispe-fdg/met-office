@@ -1,4 +1,4 @@
-import { APILocation } from "./APILocation.interface";
+import { APILocation } from "./interface";
 
 export class Location {
     id: string;
