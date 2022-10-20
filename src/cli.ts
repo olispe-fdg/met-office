@@ -1,5 +1,6 @@
 import readlineSync from "readline-sync";
 import { Location } from "./api/Location";
+import MetOfficeAPI from "./api/MetOfficeAPI";
 
 function getString(prompt: string) {
     const input = readlineSync.question(prompt);
@@ -31,8 +32,10 @@ function chooseLocationFromMatches(locations: Location[]): Location {
     return match;
 }
 
-function handleUserLocation(location: Location) {
-    console.log(location.toString());
+async function handleUserLocation(location: Location) {
+    const forecast = await MetOfficeAPI.getLocationForecast(location);
+    const nextRep = forecast.getNextRep();
+    console.log(nextRep);
 }
 
 export function commandLineInterface(locations: Location[]) {
