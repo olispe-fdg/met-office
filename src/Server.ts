@@ -1,7 +1,26 @@
 import express, { Express, Request, Response, RequestHandler } from "express";
+import { APIError } from "./api/APIError";
 
 import { Location, LocationJSON } from "./api/Location";
 import api from "./api/MetOfficeAPI";
+
+function handleErrors(requestHandler: RequestHandler): RequestHandler {
+	return async (request, response, next) => {
+		try {
+			console.log("Processing request");
+			return await requestHandler(request, response, next);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : "Error instance was of unknown type";
+			const status = err instanceof APIError ? err.statusCode : 500;
+
+			console.error(err);
+			console.log(err instanceof Error, err instanceof APIError, message, status);
+
+			response.statusMessage = message;
+			response.status(status).send();
+		}
+	}
+}
 
 export class Server {
 	app: Express;
@@ -15,7 +34,7 @@ export class Server {
 		this.app.listen(port, () => console.log(`Server started on port ${port}`));
 	}
 
-	getForecast: RequestHandler = async (request: Request, response: Response) => {
+	getForecast = handleErrors(async (request: Request, response: Response) => {
 		console.log("Forecasts requested");
 
 		const locations = await api.getLocations();
@@ -40,5 +59,5 @@ export class Server {
 		});
 
 		response.json(await Promise.all(forecasts));
-	}
+	});
 }
