@@ -67,13 +67,17 @@ export class Server {
 		const forecasts = filteredLocations.map(async (location) => {
 			const forecastData = await api.getLocationForecast(location);
 
+			const dataPoints = forecastData.periods
+				.map((period) =>
+					period.dataPoints.map((dataPoint) => dataPoint.toJSON())
+				)
+				.flat();
+
 			return {
 				id: location.id,
 				name: location.name,
 				area: location.area,
-				forecast: forecastData.periods.map((period) =>
-					period.dataPoints.map((dataPoint) => dataPoint.toJSON())
-				),
+				forecast: dataPoints,
 			};
 		});
 

@@ -1,7 +1,5 @@
 {
-	"watch": [
-		"src"
-	],
-	"ext": "ts",
+	"watch": ["src", "frontend"],
+	"ext": "ts, js",
 	"exec": "npx ts-node ./src/index.ts"
 }

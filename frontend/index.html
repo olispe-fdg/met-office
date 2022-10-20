@@ -8,25 +8,31 @@
 	</head>
 	<body>
 		<h1>MET Office Weather Forecast</h1>
-		<form onsubmit="handleLocationInput">
+		<form id="input-form">
 			Location:<br />
 			<input type="text" name="location" />
 			<input type="submit" value="Submit" />
 		</form>
-		<div id="results">
+		<section>
 			<h2>Results</h2>
-			<h3>Example forecast 1</h3>
-			<strong>1/1/2000</strong>
-			<ul>
-				<li>Wind direction: South east</li>
-				<li>Chance of rain: 50%</li>
-			</ul>
-			<h3>Example forecast 2</h3>
-			<strong>2/1/2000</strong>
-			<ul>
-				<li>Wind direction: East</li>
-				<li>Chance of rain: 70%</li>
-			</ul>
-		</div>
+			<div id="results">
+				<div>
+					<h3>Example forecast 1</h3>
+					<strong>1/1/2000</strong>
+					<ul>
+						<li>Wind direction: South east</li>
+						<li>Chance of rain: 50%</li>
+					</ul>
+				</div>
+				<div>
+					<h3>Example forecast 2</h3>
+					<strong>2/1/2000</strong>
+					<ul>
+						<li>Wind direction: East</li>
+						<li>Chance of rain: 70%</li>
+					</ul>
+				</div>
+			</div>
+		</section>
 	</body>
 </html>
