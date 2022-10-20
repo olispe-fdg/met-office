@@ -1,11 +1,11 @@
 export interface APILocation {
-    id: string;
-    name: string;
+	id: string;
+	name: string;
 
-    region: string;
-    unitaryAuthArea?: string;
+	region: string;
+	unitaryAuthArea?: string;
 
-    elevation: string;
-    latitude: string;
-    longitude: string;
+	elevation: string;
+	latitude: string;
+	longitude: string;
 }

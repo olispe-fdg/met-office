@@ -4,55 +4,55 @@ import { Forecast } from "./Forecast";
 import { APILocation } from "./interface/";
 
 enum RequestType {
-    Forecast = "wxfcs",
-    Observation = "wxobs",
+	Forecast = "wxfcs",
+	Observation = "wxobs",
 }
 
 class MetOfficeAPI {
-    private token?: string;
+	private token?: string;
 
-    constructor() {}
+	constructor() {}
 
-    configure(token: string) {
-        this.token = token;
-    }
+	configure(token: string) {
+		this.token = token;
+	}
 
-    private async request(
-        type: RequestType,
-        endpoint: string,
-        querystring: string = ""
-    ) {
-        if (!this.token) {
-            throw new Error("API token missing");
-        }
+	private async request(
+		type: RequestType,
+		endpoint: string,
+		querystring: string = ""
+	) {
+		if (!this.token) {
+			throw new Error("API token missing");
+		}
 
-        const response = await fetch(
-            `http://datapoint.metoffice.gov.uk/public/data/val/${type}/all/json/${endpoint}?key=${this.token}${querystring}`
-        );
+		const response = await fetch(
+			`http://datapoint.metoffice.gov.uk/public/data/val/${type}/all/json/${endpoint}?key=${this.token}${querystring}`
+		);
 
-        if (!response.ok) {
-            throw new APIError(response.statusText, response.status);
-        }
+		if (!response.ok) {
+			throw new APIError(response.statusText, response.status);
+		}
 
-        return await response.json();
-    }
+		return await response.json();
+	}
 
-    async getLocations(): Promise<Location[]> {
-        const sitelist = await this.request(RequestType.Forecast, "sitelist");
-        return sitelist.Locations.Location.map(
-            (location: APILocation) => new Location(location)
-        );
-    }
+	async getLocations(): Promise<Location[]> {
+		const sitelist = await this.request(RequestType.Forecast, "sitelist");
+		return sitelist.Locations.Location.map(
+			(location: APILocation) => new Location(location)
+		);
+	}
 
-    async getLocationForecast(location: Location) {
-        const data = await this.request(
-            RequestType.Forecast,
-            location.id,
-            "&res=3hourly"
-        );
+	async getLocationForecast(location: Location) {
+		const data = await this.request(
+			RequestType.Forecast,
+			location.id,
+			"&res=3hourly"
+		);
 
-        return new Forecast(data.SiteRep);
-    }
+		return new Forecast(data.SiteRep);
+	}
 }
 
 export default new MetOfficeAPI();

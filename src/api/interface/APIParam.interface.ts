@@ -1,5 +1,5 @@
 export interface APIParam {
-    name: string;
-    units: string;
-    $: string;
+	name: string;
+	units: string;
+	$: string;
 }

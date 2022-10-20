@@ -3,53 +3,53 @@ import { Location } from "./api/Location";
 import MetOfficeAPI from "./api/MetOfficeAPI";
 
 function getString(prompt: string) {
-    const input = readlineSync.question(prompt);
-    return input.toLowerCase();
+	const input = readlineSync.question(prompt);
+	return input.toLowerCase();
 }
 
 function getLocationsFromUser(locations: Location[]) {
-    const userInputLocation = getString("Enter location name: ");
-    return locations.filter(
-        (location) => location.name.toLowerCase() === userInputLocation
-    );
+	const userInputLocation = getString("Enter location name: ");
+	return locations.filter(
+		(location) => location.name.toLowerCase() === userInputLocation
+	);
 }
 
 function chooseLocationFromMatches(locations: Location[]): Location {
-    console.log("Multiple locations found!");
+	console.log("Multiple locations found!");
 
-    locations.forEach((location) => {
-        console.log(location.toString());
-    });
+	locations.forEach((location) => {
+		console.log(location.toString());
+	});
 
-    const id = getString("Enter ID: ");
+	const id = getString("Enter ID: ");
 
-    const match = locations.find((location) => location.id === id);
+	const match = locations.find((location) => location.id === id);
 
-    if (!match) {
-        return chooseLocationFromMatches(locations);
-    }
+	if (!match) {
+		return chooseLocationFromMatches(locations);
+	}
 
-    return match;
+	return match;
 }
 
 async function handleUserLocation(location: Location) {
-    const forecast = await MetOfficeAPI.getLocationForecast(location);
-    const nextRep = forecast.getNextDataPoint();
-    console.log(nextRep.toString());
+	const forecast = await MetOfficeAPI.getLocationForecast(location);
+	const nextRep = forecast.getNextDataPoint();
+	console.log(nextRep.toString());
 }
 
 export async function commandLineInterface(locations: Location[]) {
-    const matches = getLocationsFromUser(locations);
+	const matches = getLocationsFromUser(locations);
 
-    if (matches.length === 0) {
-        console.log("No location found!");
-        return;
-    }
+	if (matches.length === 0) {
+		console.log("No location found!");
+		return;
+	}
 
-    if (matches.length > 1) {
-        const match = chooseLocationFromMatches(matches);
-        return await handleUserLocation(match);
-    }
+	if (matches.length > 1) {
+		const match = chooseLocationFromMatches(matches);
+		return await handleUserLocation(match);
+	}
 
-    return await handleUserLocation(matches[0]);
+	return await handleUserLocation(matches[0]);
 }

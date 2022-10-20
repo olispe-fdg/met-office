@@ -1,8 +1,6 @@
 import { DateTime, Duration } from "luxon";
 import { APIRep } from "./interface";
 
-
-
 export class DataPoint {
 	date: DateTime;
 
@@ -33,22 +31,22 @@ export class DataPoint {
 			windSpeed: rep.S,
 			maxUVIndex: rep.U,
 			weatherType: rep.W,
-			precipitationProb: rep.Pp
+			precipitationProb: rep.Pp,
 		};
 	}
 
 	toJSON() {
 		return {
 			date: this.date.toISO(),
-			data: this.data
+			data: this.data,
 		};
 	}
 
 	toString() {
 		// Unfinished
-        return [
+		return [
 			this.date.toFormat("dd/MM/yyyy - HH:mm"),
-			`Feels like: ${this.data.feelsLike}`
+			`Feels like: ${this.data.feelsLike}`,
 		].join("\n");
-    }
+	}
 }
