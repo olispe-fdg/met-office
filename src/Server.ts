@@ -16,11 +16,11 @@ type AsyncRequestHandler = (
 	next: NextFunction
 ) => Promise<void>;
 
-function handleErrors(requestHandler: AsyncRequestHandler): RequestHandler {
+function handleErrors(requestHandler: AsyncRequestHandler): AsyncRequestHandler {
 	return async (request, response, next) => {
 		try {
 			console.log("Processing request");
-			return await requestHandler(request, response, next);
+			await requestHandler(request, response, next);
 		} catch (err) {
 			const message =
 				err instanceof Error
