@@ -16,7 +16,7 @@ async function main() {
 
     const locations = await api.getLocations();
 
-    commandLineInterface(locations);
+    await commandLineInterface(locations);
 }
 
 main();

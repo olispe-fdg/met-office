@@ -38,7 +38,7 @@ async function handleUserLocation(location: Location) {
     console.log(forecast.formatRep(nextRep));
 }
 
-export function commandLineInterface(locations: Location[]) {
+export async function commandLineInterface(locations: Location[]) {
     const matches = getLocationsFromUser(locations);
 
     if (matches.length === 0) {
@@ -48,8 +48,8 @@ export function commandLineInterface(locations: Location[]) {
 
     if (matches.length > 1) {
         const match = chooseLocationFromMatches(matches);
-        return handleUserLocation(match);
+        return await handleUserLocation(match);
     }
 
-    return handleUserLocation(matches[0]);
+    return await handleUserLocation(matches[0]);
 }

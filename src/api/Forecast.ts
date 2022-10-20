@@ -1,9 +1,9 @@
-import { APIForecast } from "./interface";
+import { APIForecast, APIParam } from "./interface";
 import { Period, PeriodRep } from "./Period";
 
 export class Forecast {
-    params;
-    periods;
+    params: APIParam[];
+    periods: Period[];
 
     constructor(data: APIForecast) {
         this.params = data.Wx.Param;
