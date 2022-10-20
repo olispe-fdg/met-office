@@ -16,7 +16,9 @@ type AsyncRequestHandler = (
 	next: NextFunction
 ) => Promise<void>;
 
-function handleErrors(requestHandler: AsyncRequestHandler): AsyncRequestHandler {
+function handleErrors(
+	requestHandler: AsyncRequestHandler
+): AsyncRequestHandler {
 	return async (request, response, next) => {
 		try {
 			console.log("Processing request");
@@ -40,6 +42,7 @@ export class Server {
 	constructor() {
 		this.app = express();
 		this.app.get("/forecast", this.getForecast);
+		this.app.use(express.static("frontend"));
 	}
 
 	start(port: number) {
