@@ -15,11 +15,10 @@ async function main() {
 
     api.configure(token);
 
-    const locations = await api.getLocations();
-
 	const server = new Server();
 	server.start(8080);
 
+    //const locations = await api.getLocations();
     //await commandLineInterface(locations);
 }
 

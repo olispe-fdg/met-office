@@ -2,7 +2,7 @@
     "main": "build/index.js",
     "scripts": {
         "start": "node ./build/index.js",
-        "start:dev": "ts-node ./src/index.ts",
+        "start:dev": "nodemon",
         "build": "tsc --incremental",
         "clean": "rimraf build/*; rimraf tsconfig.tsbuildinfo"
     },

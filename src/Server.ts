@@ -1,4 +1,6 @@
 import express, { Express, Request, Response, RequestHandler } from "express";
+
+import { Location, LocationJSON } from "./api/Location";
 import api from "./api/MetOfficeAPI";
 
 export class Server {
@@ -13,7 +15,19 @@ export class Server {
 		this.app.listen(port, () => console.log(`Server started on port ${port}`));
 	}
 
-	getForecast: RequestHandler = (request: Request, response: Response) => {
-		response.send("Hello world");
+	getForecast: RequestHandler = async (request: Request, response: Response) => {
+		console.log("Forecasts requested");
+
+		const locations = await api.getLocations();
+
+		const filterKeys = Object.keys(request.query).filter(
+			filterKey => Location.hasProperty(filterKey)
+		) as (keyof LocationJSON)[];
+
+		const filteredLocations = locations.filter(location => filterKeys.every(filterKey =>
+			request.query[filterKey] === location[filterKey]
+		));
+
+		response.json(filteredLocations);
 	}
 }

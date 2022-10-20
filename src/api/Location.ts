@@ -1,5 +1,11 @@
 import { APILocation } from "./interface";
 
+export interface LocationJSON {
+    id: string;
+    name: string;
+    area?: string;
+}
+
 export class Location {
     id: string;
     name: string;
@@ -9,6 +15,10 @@ export class Location {
         this.id = id;
         this.name = name;
         this.area = unitaryAuthArea;
+    }
+
+    static hasProperty(key: string) {
+        return ["id", "name", "area"].includes(key);
     }
 
     toString() {
