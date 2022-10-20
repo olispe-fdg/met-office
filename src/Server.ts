@@ -13,9 +13,6 @@ function handleErrors(requestHandler: RequestHandler): RequestHandler {
 			const message = err instanceof Error ? err.message : "Error instance was of unknown type";
 			const status = err instanceof APIError ? err.statusCode : 500;
 
-			console.error(err);
-			console.log(err instanceof Error, err instanceof APIError, message, status);
-
 			response.statusMessage = message;
 			response.status(status).send();
 		}
