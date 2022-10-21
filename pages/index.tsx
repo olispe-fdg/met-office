@@ -1,17 +1,50 @@
-import { haversineDistance } from "lib/client/haversineDistance";
+import { haversineDistance, Position } from "lib/client/haversineDistance";
+import { APILocation } from "lib/client/interface";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-	const [position, setPosition] = useState<GeolocationPosition>();
+	const [position, setPosition] = useState<Position>({
+		latitude: 0,
+		longitude: 0,
+	});
+
+	const [location, setLocation] = useState<APILocation>();
+
+	async function getClosestLocation() {
+		const response = await fetch("/api/locations");
+		const locations = (await response.json()) as APILocation[];
+
+		if (locations.length < 1 || !position) {
+			return;
+		}
+
+		setLocation(
+			locations.reduce((prev, curr) => {
+				if (!prev) {
+					return curr;
+				}
+
+				if (
+					haversineDistance(position, curr) < haversineDistance(position, prev)
+				) {
+					return curr;
+				}
+
+				return prev;
+			})
+		);
+	}
 
 	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(function (position) {
-			setPosition(position);
+		navigator.geolocation.getCurrentPosition((position) => {
+			setPosition(position.coords);
 		});
+
+		getClosestLocation();
 	}, []);
 
 	return (
@@ -26,18 +59,11 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className={styles.main}>
-				{position !== undefined && (
+				{location && (
 					<div>
-						<span>Latitude: {position.coords.latitude}</span>
-						<br />
-						<span>Longitude: {position.coords.longitude}</span>
-						<br />
+						<span>Name: {location.area}</span>
 						<span>
-							Distance to Carlisle Airport:{" "}
-							{haversineDistance(position.coords, {
-								latitude: 54.9375,
-								longitude: -2.8092,
-							})}
+							Latlong: {location.latitude}, {location.longitude}
 						</span>
 					</div>
 				)}

@@ -1,5 +1,5 @@
-export { APIForecast } from "./APIForecast.interface";
-export { APILocation } from "./APILocation.interface";
-export { APIParam } from "./APIParam.interface";
-export { APIPeriod } from "./APIPeriod.interface";
-export { APIRep } from "./APIRep.interface";
+export type { APIForecast } from "./APIForecast.interface";
+export type { APILocation } from "./APILocation.interface";
+export type { APIParam } from "./APIParam.interface";
+export type { APIPeriod } from "./APIPeriod.interface";
+export type { APIRep } from "./APIRep.interface";
