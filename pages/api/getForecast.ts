@@ -24,7 +24,7 @@ export default handleErrors(async function handler(
         )
     );
 
-    if (serverRuntimeConfig.locationLimit) {
+    if (filteredLocations.length > serverRuntimeConfig.locationLimit) {
         return res.status(400).json({
             message:
                 "Too many locations matching parameters. Please be more specific.",
