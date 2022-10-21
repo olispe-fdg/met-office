@@ -49,7 +49,22 @@ class MetOfficeAPI {
 		);
 	}
 
-	async getLocationForecast(location: Location) {
+	async getLocationFromId(id: string): Promise<Location> {
+		const locations = await this.getLocations();
+		const matches = locations.filter((location) => location.id === id);
+
+		if (matches.length < 1) {
+			throw new APIError("No location with that ID exists", 404);
+		}
+
+		if (matches.length > 1) {
+			throw new APIError("Duplicate IDs returned by the Met Office API", 500);
+		}
+
+		return matches[0];
+	}
+
+	async getLocationForecast(location: Location): Promise<Forecast> {
 		const data = await this.request(
 			RequestType.Forecast,
 			location.id,
