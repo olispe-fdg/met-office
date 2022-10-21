@@ -537,6 +537,18 @@
   dependencies:
     "tslib" "^2.4.0"
 
+"@types/color-convert@^2.0.0":
+  "integrity" "sha512-m7GG7IKKGuJUXvkZ1qqG3ChccdIM/qBBo913z+Xft0nKCX4hAU/IxKwZBU4cpRZ7GS5kV4vOblUkILtSShCPXQ=="
+  "resolved" "https://registry.npmjs.org/@types/color-convert/-/color-convert-2.0.0.tgz"
+  "version" "2.0.0"
+  dependencies:
+    "@types/color-name" "*"
+
+"@types/color-name@*":
+  "integrity" "sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ=="
+  "resolved" "https://registry.npmjs.org/@types/color-name/-/color-name-1.1.1.tgz"
+  "version" "1.1.1"
+
 "@types/javascript-color-gradient@^2.4.0":
   "integrity" "sha512-bDeTAgHvDRn40mlnGRE5nTVlfQ9KRqi9L0VC+zJwVY/XNgulIq9lZxTV9wIi6nfXu/eG4ehKmG3uCq49uYYqDA=="
   "resolved" "https://registry.npmjs.org/@types/javascript-color-gradient/-/javascript-color-gradient-2.4.0.tgz"

@@ -45,16 +45,27 @@ const Dashboard: React.FC<{
 		<div className={styles.container}>
 			<h1 className={styles.header}>{location.area || location.name}</h1>
 			<div>
-				<Dial amount={dataPoint.data.precipitationProb} size={18}>
+				<Dial
+					amount={dataPoint.data.precipitationProb}
+					min={0}
+					max={100}
+					size={18}
+				>
 					<UmbrellaFill size={128} />
 				</Dial>
 			</div>
 			<div className={styles.secondaryContainer}>
-				<Dial amount={dataPoint.data.temperature} size={8}>
+				<Dial amount={dataPoint.data.temperature} min={-5} max={50} size={8}>
 					<ThermometerHalf size={48} />
 				</Dial>
 				<p>{weatherTypes[dataPoint.data.weatherType]}</p>
-				<Dial amount={dataPoint.data.maxUVIndex} label="UV" size={8} />
+				<Dial
+					amount={dataPoint.data.maxUVIndex}
+					label="UV"
+					min={0}
+					max={11}
+					size={8}
+				/>
 			</div>
 		</div>
 	);
