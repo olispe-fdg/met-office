@@ -1,15 +1,22 @@
 import { haversineDistance, Position } from "lib/client/haversineDistance";
-import { APILocation } from "lib/client/interface";
+import { APILocation, APIDataPoint } from "lib/client/interface";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { Dispatch, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
 	const [position, setPosition] = useState<Position>();
-
 	const [location, setLocation] = useState<APILocation>();
+	const [dataPoint, setDataPoint] = useState<APIDataPoint>();
+
+	async function getLatestDataPoint() {
+		if (!location) return;
+
+		const response = await fetch(`/api/forecast/latest/${location.id}`);
+
+		setDataPoint(await response.json());
+	}
 
 	async function getClosestLocation() {
 		const response = await fetch("/api/locations");
@@ -38,7 +45,6 @@ const Home: NextPage = () => {
 
 	useEffect(() => {
 		if (position) return;
-
 		navigator.geolocation.getCurrentPosition((position) => {
 			setPosition(position.coords);
 		});
@@ -48,6 +54,11 @@ const Home: NextPage = () => {
 		if (!position) return;
 		getClosestLocation();
 	}, [position]);
+
+	useEffect(() => {
+		if (!location) return;
+		getLatestDataPoint();
+	}, [location]);
 
 	return (
 		<div className={styles.container}>
@@ -68,12 +79,23 @@ const Home: NextPage = () => {
 						</span>
 					</div>
 				)}
+				<br />
+
 				{location && (
 					<div>
-						<div>Name: {location.area}</div>
+						<div>Name: {location.name}</div>
 						<div>
 							Latlong: {location.latitude}, {location.longitude}
 						</div>
+					</div>
+				)}
+
+				<br />
+
+				{dataPoint && (
+					<div>
+						<div>{dataPoint.date}</div>
+						<div>{dataPoint.data.precipitationProb}% Chance of rain</div>
 					</div>
 				)}
 			</main>
