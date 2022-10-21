@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { handleErrors } from "lib/server/errorHandler";
-import { Location, LocationJSON } from "lib/server/Location";
+import { Location } from "lib/server/Location";
 import MetOfficeAPI from "lib/server/MetOfficeAPI";
 
 export default handleErrors(async function handler(
@@ -12,8 +12,8 @@ export default handleErrors(async function handler(
 	const locations = await MetOfficeAPI.getLocations();
 
 	const filterKeys = Object.keys(req.query).filter((filterKey) =>
-		Location.hasProperty(filterKey)
-	) as (keyof LocationJSON)[];
+		["id", "name", "area"].includes(filterKey)
+	) as (keyof Location)[];
 
 	const filteredLocations = locations.filter((location) =>
 		filterKeys.every(
