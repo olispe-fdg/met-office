@@ -1,0 +1,16 @@
+.header {
+	font-size: 1.4rem;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.secondaryContainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 4rem;
+}

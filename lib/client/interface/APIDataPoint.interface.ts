@@ -1,15 +1,15 @@
 export interface APIDataPoint {
 	date: string;
 	data: {
-		feelsLike: string;
-		windGust: string;
-		relativeHumidity: string;
-		temperature: string;
+		feelsLike: number;
+		windGust: number;
+		relativeHumidity: number;
+		temperature: number;
 		visibility: string;
 		windDirection: string;
-		windSpeed: string;
-		maxUVIndex: string;
+		windSpeed: number;
+		maxUVIndex: number;
 		weatherType: string;
-		precipitationProb: string;
+		precipitationProb: number;
 	};
 }

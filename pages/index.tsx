@@ -1,8 +1,8 @@
 import { haversineDistance, Position } from "lib/client/haversineDistance";
 import { APILocation, APIDataPoint } from "lib/client/interface";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useEffect, useState } from "react";
+import Dashboard from "../components/Dashboard";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -32,13 +32,10 @@ const Home: NextPage = () => {
 					return curr;
 				}
 
-				if (
-					haversineDistance(position, curr) < haversineDistance(position, prev)
-				) {
-					return curr;
-				}
-
-				return prev;
+				return haversineDistance(position, curr) <
+					haversineDistance(position, prev)
+					? curr
+					: prev;
 			})
 		);
 	}
@@ -62,41 +59,9 @@ const Home: NextPage = () => {
 
 	return (
 		<div className={styles.container}>
-			<Head>
-				<title>Met Office</title>
-				<meta
-					name="description"
-					content="Weather widget using the Met Office DataPoint API with a focus on rain"
-				/>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-
 			<main className={styles.main}>
-				{position && (
-					<div>
-						<span>
-							Latlong: {position.latitude}, {position.longitude}
-						</span>
-					</div>
-				)}
-				<br />
-
-				{location && (
-					<div>
-						<div>Name: {location.name}</div>
-						<div>
-							Latlong: {location.latitude}, {location.longitude}
-						</div>
-					</div>
-				)}
-
-				<br />
-
-				{dataPoint && (
-					<div>
-						<div>{dataPoint.date}</div>
-						<div>{dataPoint.data.precipitationProb}% Chance of rain</div>
-					</div>
+				{location && dataPoint && (
+					<Dashboard location={location} dataPoint={dataPoint} />
 				)}
 			</main>
 		</div>
