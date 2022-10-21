@@ -7,10 +7,7 @@ import { Dispatch, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-	const [position, setPosition] = useState<Position>({
-		latitude: 0,
-		longitude: 0,
-	});
+	const [position, setPosition] = useState<Position>();
 
 	const [location, setLocation] = useState<APILocation>();
 
@@ -40,12 +37,17 @@ const Home: NextPage = () => {
 	}
 
 	useEffect(() => {
+		if (position) return;
+
 		navigator.geolocation.getCurrentPosition((position) => {
 			setPosition(position.coords);
 		});
-
-		getClosestLocation();
 	}, []);
+
+	useEffect(() => {
+		if (!position) return;
+		getClosestLocation();
+	}, [position]);
 
 	return (
 		<div className={styles.container}>
@@ -59,12 +61,19 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className={styles.main}>
+				{position && (
+					<div>
+						<span>
+							Latlong: {position.latitude}, {position.longitude}
+						</span>
+					</div>
+				)}
 				{location && (
 					<div>
-						<span>Name: {location.area}</span>
-						<span>
+						<div>Name: {location.area}</div>
+						<div>
 							Latlong: {location.latitude}, {location.longitude}
-						</span>
+						</div>
 					</div>
 				)}
 			</main>
