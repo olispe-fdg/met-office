@@ -5,16 +5,16 @@ export class Location {
 	name: string;
 	area?: string;
 
-	latitude: string;
-	longitude: string;
+	latitude: number;
+	longitude: number;
 
 	constructor({ id, name, unitaryAuthArea, latitude, longitude }: APILocation) {
 		this.id = id;
 		this.name = name;
 		this.area = unitaryAuthArea;
 
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.latitude = parseFloat(latitude);
+		this.longitude = parseFloat(longitude);
 	}
 
 	toString() {
