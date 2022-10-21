@@ -16,10 +16,5 @@ export default handleErrors(async function handler(
 	const location = await MetOfficeAPI.getLocationFromId(id);
 	const forecast = await MetOfficeAPI.getLocationForecast(location);
 
-	res.status(200).json({
-		id: location.id,
-		name: location.name,
-		area: location.area,
-		forecast: forecast.getNextDataPoint().toJSON(),
-	});
+	res.status(200).json(forecast.getNextDataPoint().toJSON());
 });
