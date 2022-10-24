@@ -71,7 +71,13 @@ const Dashboard: React.FC<{
 					min={0}
 					max={11}
 					size={8}
-					gradient={{ 0: "#00ff00", 11: "#ff0000" }}
+					gradient={{
+						0: "#558B2F",
+						3: "#F9A825",
+						6: "#EF6C00",
+						8: "#B71C1C",
+						11: "#6A1B9A",
+					}}
 				>
 					<span>UV</span>
 				</Dial>
