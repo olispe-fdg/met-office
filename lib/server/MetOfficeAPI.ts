@@ -2,6 +2,9 @@ import { Location } from "./Location";
 import { APIError } from "./APIError";
 import { Forecast } from "./Forecast";
 import { APILocation } from "./interface/";
+import getConfig from "next/config";
+
+const { serverRuntimeConfig } = getConfig();
 
 enum RequestType {
 	Forecast = "wxfcs",
@@ -9,12 +12,14 @@ enum RequestType {
 }
 
 class MetOfficeAPI {
-	private token?: string;
+	private token: string;
 
-	constructor() {}
+	constructor() {
+		if (!serverRuntimeConfig.metOfficeApiKey) {
+			throw new Error("No API key in .env");
+		}
 
-	configure(token: string) {
-		this.token = token;
+		this.token = serverRuntimeConfig.metOfficeApiKey;
 	}
 
 	private async request(
@@ -44,7 +49,22 @@ class MetOfficeAPI {
 		);
 	}
 
-	async getLocationForecast(location: Location) {
+	async getLocationFromId(id: string): Promise<Location> {
+		const locations = await this.getLocations();
+		const matches = locations.filter((location) => location.id === id);
+
+		if (matches.length < 1) {
+			throw new APIError("No location with that ID exists", 404);
+		}
+
+		if (matches.length > 1) {
+			throw new APIError("Duplicate IDs returned by the Met Office API", 500);
+		}
+
+		return matches[0];
+	}
+
+	async getLocationForecast(location: Location): Promise<Forecast> {
 		const data = await this.request(
 			RequestType.Forecast,
 			location.id,

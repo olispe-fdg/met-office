@@ -1,24 +1,20 @@
 import { APILocation } from "./interface";
 
-export interface LocationJSON {
-	id: string;
-	name: string;
-	area?: string;
-}
-
 export class Location {
 	id: string;
 	name: string;
 	area?: string;
 
-	constructor({ id, name, unitaryAuthArea }: APILocation) {
+	latitude: number;
+	longitude: number;
+
+	constructor({ id, name, unitaryAuthArea, latitude, longitude }: APILocation) {
 		this.id = id;
 		this.name = name;
 		this.area = unitaryAuthArea;
-	}
 
-	static hasProperty(key: string) {
-		return ["id", "name", "area"].includes(key);
+		this.latitude = parseFloat(latitude);
+		this.longitude = parseFloat(longitude);
 	}
 
 	toString() {

@@ -5,16 +5,16 @@ export class DataPoint {
 	date: DateTime;
 
 	data: {
-		feelsLike: string;
-		windGust: string;
-		relativeHumidity: string;
-		temperature: string;
+		feelsLike: number;
+		windGust: number;
+		relativeHumidity: number;
+		temperature: number;
 		visibility: string;
 		windDirection: string;
-		windSpeed: string;
-		maxUVIndex: string;
+		windSpeed: number;
+		maxUVIndex: number;
 		weatherType: string;
-		precipitationProb: string;
+		precipitationProb: number;
 	};
 
 	constructor(rep: APIRep, day: DateTime) {
@@ -22,16 +22,16 @@ export class DataPoint {
 		this.date = day.plus(minutes);
 
 		this.data = {
-			feelsLike: rep.F,
-			windGust: rep.G,
-			relativeHumidity: rep.H,
-			temperature: rep.T,
+			feelsLike: parseInt(rep.F),
+			windGust: parseInt(rep.G),
+			relativeHumidity: parseInt(rep.H),
+			temperature: parseInt(rep.T),
 			visibility: rep.V,
 			windDirection: rep.D,
-			windSpeed: rep.S,
-			maxUVIndex: rep.U,
+			windSpeed: parseInt(rep.S),
+			maxUVIndex: parseInt(rep.U),
 			weatherType: rep.W,
-			precipitationProb: rep.Pp,
+			precipitationProb: parseInt(rep.Pp),
 		};
 	}
 
