@@ -1625,11 +1625,6 @@
   "resolved" "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"
   "version" "2.0.0"
 
-"javascript-color-gradient@^2.4.4":
-  "integrity" "sha512-kbt3Y1eltW4X789P1eQzCUEB5X7hFmLNpQT4bgDFMtj/cW2v+j8ms/rLSR7jndZUAP6yya4vyeZK6bRqh6yClA=="
-  "resolved" "https://registry.npmjs.org/javascript-color-gradient/-/javascript-color-gradient-2.4.4.tgz"
-  "version" "2.4.4"
-
 "js-sdsl@^4.1.4":
   "integrity" "sha512-08bOAKweV2NUC1wqTtf3qZlnpOX/R2DU9ikpjOHs0H+ibQv3zpncVQg6um4uYtRtrwIX8M4Nh3ytK4HGlYAq7Q=="
   "resolved" "https://registry.npmjs.org/js-sdsl/-/js-sdsl-4.1.5.tgz"

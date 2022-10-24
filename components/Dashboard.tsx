@@ -50,22 +50,31 @@ const Dashboard: React.FC<{
 					min={0}
 					max={100}
 					size={18}
+					gradient={{ 0: "#000022", 100: "#0000ff" }}
 				>
 					<UmbrellaFill size={128} />
 				</Dial>
 			</div>
 			<div className={styles.secondaryContainer}>
-				<Dial amount={dataPoint.data.temperature} min={-5} max={50} size={8}>
+				<Dial
+					amount={dataPoint.data.temperature}
+					min={-5}
+					max={50}
+					size={8}
+					gradient={{ "-5": "#00ff00", 50: "#ff0000" }}
+				>
 					<ThermometerHalf size={48} />
 				</Dial>
 				<p>{weatherTypes[dataPoint.data.weatherType]}</p>
 				<Dial
 					amount={dataPoint.data.maxUVIndex}
-					label="UV"
 					min={0}
 					max={11}
 					size={8}
-				/>
+					gradient={{ 0: "#00ff00", 11: "#ff0000" }}
+				>
+					<span>UV</span>
+				</Dial>
 			</div>
 		</div>
 	);

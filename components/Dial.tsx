@@ -1,26 +1,68 @@
 import React, { PropsWithChildren, useMemo } from "react";
 import { CircularProgress } from "@mui/joy";
-import Gradient from "javascript-color-gradient";
 import colour_convert from "color-convert";
+import { HSL } from "color-convert/conversions";
 
 function remap(value: number, min: number, max: number): number {
-	console.log(value, min, max, (value - min) / (max - min));
+	if (min === max) return 0; // Prevent div by 0
+
 	return Math.min(Math.max((value - min) / (max - min), 0), 1);
 }
 
-function remapToGradient(
-	value: number,
-	min: number,
-	max: number,
-	gradient: string[]
-) {
-	const linearValue = remap(value, min, max);
+function lerp(start: number, end: number, time: number): number {
+	return start * (1 - time) + end * time;
+}
 
-	const floatingIndex = linearValue * (gradient.length - 1);
-	const lowIndex = Math.floor(floatingIndex);
-	const highIndex = Math.ceil(floatingIndex);
+export type Gradient = { [key: number]: string };
 
-	return gradient[lowIndex];
+function closestInArray(
+	num: number,
+	arr: number[]
+): { lower: number; upper: number } {
+	const sorted = arr.sort((a, b) => a - b);
+
+	for (let i = 0; i < sorted.length; i++) {
+		const val = sorted[i];
+
+		if (val === num) {
+			return { lower: val, upper: val };
+		}
+
+		if (val > num) {
+			if (i === 0) {
+				return { lower: val, upper: val };
+			}
+
+			return { lower: sorted[i - 1], upper: val };
+		}
+	}
+
+	const lastVal = sorted[sorted.length - 1];
+	return { lower: lastVal, upper: lastVal };
+}
+
+function sampleGradient(value: number, gradient: Gradient) {
+	console.log("Sampling gradient");
+	const numericKeys = Object.keys(gradient).map(Number);
+	console.log(numericKeys);
+
+	const bounds = closestInArray(value, numericKeys);
+	const fraction = remap(value, bounds.lower, bounds.upper);
+	console.log(bounds, fraction);
+
+	const boundsColours = {
+		lower: colour_convert.hex.hsl(gradient[bounds.lower]),
+		upper: colour_convert.hex.hsl(gradient[bounds.upper]),
+	};
+
+	const interpolatedColour = boundsColours.lower.map((value, index) =>
+		lerp(value, boundsColours.upper[index], fraction)
+	) as HSL;
+
+	console.log(boundsColours, interpolatedColour);
+
+	const hexColour = colour_convert.hsl.hex(interpolatedColour);
+	return "#" + hexColour;
 }
 
 export const Dial: React.FC<
@@ -30,34 +72,22 @@ export const Dial: React.FC<
 		max: number;
 
 		size: number;
-		label?: string;
+		gradient: Gradient;
 	}>
-> = ({ amount, min, max, label, size, children }) => {
-	const gradient = useMemo(() => {
-		return new Gradient()
-			.setColorGradient("#000000", "#ffffff")
-			.setMidpoint(10)
-			.getColors();
-	}, []);
-
+> = ({ amount, min, max, size, gradient, children }) => {
 	return (
 		<CircularProgress
 			sx={{
-				color: remapToGradient(amount, min, max, gradient),
-				"--CircularProgress-progress-color": remapToGradient(
-					amount,
-					min,
-					max,
-					gradient
-				),
+				//color: sampleGradient(amount, gradient),
+				"--CircularProgress-progress-color": sampleGradient(amount, gradient),
 				"--CircularProgress-size": `${size}rem`,
-				"--CircularProgress-track-thickness": `24px`,
-				"--CircularProgress-progress-thickness": `24px`,
+				"--CircularProgress-track-thickness": `${Math.sqrt(size) * 0.4}rem`,
+				"--CircularProgress-progress-thickness": `${Math.sqrt(size) * 0.4}rem`,
 			}}
 			determinate
 			value={remap(amount, min, max) * 100}
 		>
-			{label ? <p>{label}</p> : children}
+			{children}
 		</CircularProgress>
 	);
 };
