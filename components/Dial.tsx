@@ -42,13 +42,10 @@ function closestInArray(
 }
 
 function sampleGradient(value: number, gradient: Gradient) {
-	console.log("Sampling gradient");
 	const numericKeys = Object.keys(gradient).map(Number);
-	console.log(numericKeys);
 
 	const bounds = closestInArray(value, numericKeys);
 	const fraction = remap(value, bounds.lower, bounds.upper);
-	console.log(bounds, fraction);
 
 	const boundsColours = {
 		lower: colour_convert.hex.hsl(gradient[bounds.lower]),
@@ -58,8 +55,6 @@ function sampleGradient(value: number, gradient: Gradient) {
 	const interpolatedColour = boundsColours.lower.map((value, index) =>
 		lerp(value, boundsColours.upper[index], fraction)
 	) as HSL;
-
-	console.log(boundsColours, interpolatedColour);
 
 	const hexColour = colour_convert.hsl.hex(interpolatedColour);
 	return "#" + hexColour;
